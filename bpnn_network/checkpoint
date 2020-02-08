@@ -1,0 +1,2 @@
+model_checkpoint_path: "bpnn.pickle"
+all_model_checkpoint_paths: "bpnn.pickle"
