@@ -50,7 +50,7 @@ def shuffle_data(data, label):
 
 
 def read_Mobil_dataset(b_shuffle=True):
-    data_dir = "/home/xsong/Dropbox/Study/DFBPickingNN_my/data/"
+    data_dir = os.getcwd()+'/data/'
     neg_dir  = "negative/"
     pos_dir  = "positive/"
 
