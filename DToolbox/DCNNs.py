@@ -9,7 +9,6 @@ from DToolbox.DBase import DBase
 import tensorflow as tf
 import numpy as np
 
-
 class DCNN_moon(DBase):
     '''
     DCNN_moon, two convolutional layers, kernels=[1,2,2,1], single fc network.
@@ -36,6 +35,7 @@ class DCNN_moon(DBase):
                              filters=weights,
                              strides=[1, 1, 1, 1],
                              padding='SAME')
+
         layer = tf.add(layer, biases)
         if b_pooling == True:
             layer = tf.compat.v1.nn.max_pool(value=layer,
@@ -78,7 +78,7 @@ class DCNN_moon(DBase):
     def Prediction(self):
         self.pred = self.CNN()
         # self.pred_fabs = tf.math.abs(self.pred)
-        self.pred_prob = tf.sigmoid(self.pred)
+        # self.pred_prob = tf.sigmoid(self.pred)
 
 
     def Get_Loss(self):
@@ -115,7 +115,6 @@ class DCNN_moon(DBase):
                                                                      b_pooling=True)
         print("after conv2=", np.shape(layer_conv2))
 
-
         # flatting
         layer_flat, num_features = self.Flatten(layer_conv2)
         print("num_features=", num_features)
@@ -126,7 +125,7 @@ class DCNN_moon(DBase):
                                                             num_inputs=num_features,
                                                             num_outputs=output_size,
                                                             b_activation=False)
-
+    
         if self.b_Activation == True:
             return tf.nn.softmax(self.fc_output)
         else:

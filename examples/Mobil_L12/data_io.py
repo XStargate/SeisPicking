@@ -113,8 +113,8 @@ def wave2image(wave, counts, Threshold=None):
     return image
 
 
-def get_DCNN_database():
-    train_data, train_label, test_data, test_label = read_Mobil_dataset(b_shuffle=True)
+def get_DCNN_database(b_shuffle=True):
+    train_data, train_label, test_data, test_label = read_Mobil_dataset(b_shuffle=b_shuffle)
     print("+ Loading waveform as image... ")
 
     train_images = []
@@ -135,11 +135,11 @@ def get_DCNN_database():
     return train_images, train_label, test_images, test_label
 
 
-def load_dataset(nn_type, b_shuffle=True):
+def load_dataset(nn_type, b_shuffle=False):
     if nn_type == g_type_DRNN or nn_type == g_type_DBPNN:
         return read_Mobil_dataset(b_shuffle=b_shuffle)
     elif nn_type is g_type_DCNN:
-        return get_DCNN_database()
+        return get_DCNN_database(b_shuffle)
 
 
 

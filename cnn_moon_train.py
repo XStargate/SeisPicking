@@ -11,7 +11,6 @@ import numpy as np
 import pickle
 import matplotlib.pyplot as plt
 
-
 def dcnn_train_moon(model_path=None, b_save=False):
     training_data, training_label, testing_data, testing_label = load_dataset(nn_type=g_type_DCNN, b_shuffle=True)
     print(np.shape(training_data), np.shape(training_label))
@@ -46,6 +45,7 @@ def dcnn_train_moon(model_path=None, b_save=False):
         print("+ Initial! Test: loss={:.5f}, acc={:.2f} %".format(test_loss, test_acc * 100))
 
         for each_epoch in range(n_epoch):
+            running_loss = 0.0
             for each_batch in range(n_batch):
                 idx = each_batch * batch_size
 
@@ -58,12 +58,13 @@ def dcnn_train_moon(model_path=None, b_save=False):
                 _, train_loss, train_pred, train_acc = sess.run([moon.train_step, moon.loss,
                                                                  moon.pred, moon.accuracy],
                                                                 feed_dict={moon.x: xs, moon.y: ys})
-
+                
+                running_loss += train_loss
             test_loss, test_acc = sess.run([moon.loss, moon.accuracy],
                                            feed_dict={moon.x: test_xs, moon.y: test_ys})
 
-            print("+ {} th, Train: acc={:.2f} %. Test: acc={:.2f} %".
-                  format(each_epoch, train_acc * 100, test_acc * 100))
+            print("+ {} th, Train: acc={:.2f} %. Loss={:.4f}. Test: acc={:.2f} %".
+                  format(each_epoch, train_acc * 100, running_loss, test_acc * 100))
 
         weight = np.transpose(moon.weight.eval())
         print(np.shape(weight))
@@ -75,8 +76,6 @@ def dcnn_train_moon(model_path=None, b_save=False):
             moon.Save(sess, model_path)
 
         return
-
-
 
 
 if __name__ == '__main__':
