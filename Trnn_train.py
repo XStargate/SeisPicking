@@ -1,10 +1,10 @@
 # -------------------------------------------------------------------
-# An example of DBPNN by Torch
+# An example of DRNN by Torch
 # -------------------------------------------------------------------
 
 from examples.Mobil_L12.data_io import load_dataset
-from DToolbox.TorchBPNNs import BPNN
-from DToolbox import g_type_DBPNN
+from DToolbox.TorchRNNs import TRNN
+from DToolbox import g_type_DRNN
 import numpy as np
 import torch
 torch.set_default_dtype(torch.float64)
@@ -14,26 +14,26 @@ import torch.optim as optim
 
 import pickle
 
-def bpnn_train(model_path=None, b_save=False):
-    training_data, training_label, testing_data, testing_label = load_dataset(nn_type=g_type_DBPNN, b_shuffle=True)
+def rnn_train(model_path=None, b_save=False):
+    training_data, training_label, testing_data, testing_label = load_dataset(nn_type=g_type_DRNN, b_shuffle=True)
     print(np.shape(training_data), np.shape(training_label))
     print(np.shape(testing_data), np.shape(testing_label))
 
-    # learning rate
-    lr = 1e-2
+    # parameters
+    lr = 1e-1
 
-    n_epoch = 100
+    n_epoch = 10
     batch_size = 50
-    n_data = len(training_data)
+    n_data = len(training_label)
     n_batch = int(n_data / batch_size)
 
-    net = BPNN()
+    net = TRNN()
     # define the loss function
     criterion = nn.CrossEntropyLoss()
 
     # define the optimizing method
     # optimizer = optim.Adam(net.parameters(), lr=lr, weight_decay=1)
-    optimizer = optim.SGD(net.parameters(), lr=lr, momentum=0.1)
+    optimizer = optim.SGD(net.parameters(), lr=lr, momentum=0.5)
 
     for epoch in range(n_epoch):
         running_loss = 0.0
@@ -52,7 +52,7 @@ def bpnn_train(model_path=None, b_save=False):
             ys = np.asarray(ys)
             xs = torch.from_numpy(xs)
             ys = torch.from_numpy(ys)
-            # xs = xs.view(xs.size()[0], 1, xs.size()[1], xs.size()[2])
+            xs = xs.view(xs.size()[0], xs.size()[1], 1)
             xs = xs.double()
             ys = ys.long()
 
@@ -63,7 +63,11 @@ def bpnn_train(model_path=None, b_save=False):
             optimizer.zero_grad()
 
             # forward + backward + optimize
+            
             outputs = net(inputs)
+            # logp = nn.functional.log_softmax(outputs)
+            # logpy = torch.gather(logp, 1, labels.view(-1,1))
+            # loss = -(logpy).mean()
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
@@ -80,15 +84,18 @@ def bpnn_train(model_path=None, b_save=False):
         ys_test = np.asarray(ys_test)
         xs_test = torch.from_numpy(xs_test)
         ys_test = torch.from_numpy(ys_test)
-        xs_test = xs_test.double()        
+        xs_test = xs_test.view(xs_test.size()[0], xs_test.size()[1], 1)
+        xs_test = xs_test.double()
         input_test, label_test = Variable(xs_test), Variable(ys_test)
         output_test = net(input_test)
         _, pred_test = torch.max(output_test, 1)
         correct_test = (pred_test == label_test).sum().item()
         total_test = len(label_test)
+        # print("loss = ", running_loss, " Accuracy = {:.4f} %".format(100*correct/total))
         print("+ {} th, Train: loss={:.4f}. Accuracy={:.4f} %. Test: acc={:.4f} %".
                 format(epoch, running_loss,100*correct/total, 100*correct_test/total_test))
 
 if __name__ == '__main__':
-    model_path = 'bpnn_network/Tbpnn.pickle'
-    bpnn_train(model_path, b_save=True)
+    model_path = 'rnn_network/Trnn.pickle'
+    rnn_train(model_path, b_save=True)
+

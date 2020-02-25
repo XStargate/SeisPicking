@@ -7,6 +7,7 @@ tf2.disable_v2_behavior()
 from DToolbox.DBase import DBase
 import tensorflow as tf
 
+import pdb
 
 class DRNN_moon(DBase):
     def __init__(self, input_dim, input_length, output_dim, output_length, cell_size, lr):
