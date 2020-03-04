@@ -16,4 +16,5 @@ Pytorch version: Trnn_train.py
 
 ## Other supplementary information
 For the information of dataset, please refer to Readme_dataset.pdf
+
 For the seismograms with/without signal, please refer to seismograms.pdf
