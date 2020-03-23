@@ -32,7 +32,7 @@ def cnn_train(model_path=None, b_save=False):
     criterion = nn.CrossEntropyLoss()
 
     # define the optimizing method
-    # optimizer = optim.Adam(net.parameters(), lr=lr, weight_decay=1)
+    # optimizer = optim.Adam(net.parameters(), lr=lr)
     optimizer = optim.SGD(net.parameters(), lr=lr, momentum=0.1)
 
     for epoch in range(n_epoch):
@@ -40,7 +40,6 @@ def cnn_train(model_path=None, b_save=False):
         correct = 0
         total = 0
         for each_batch in range(n_batch):
-        # for each_batch in range(8):
             idx = each_batch * batch_size
             if idx + batch_size > n_data:
                 break
@@ -90,7 +89,6 @@ def cnn_train(model_path=None, b_save=False):
         correct_test = (pred_test == label_test).sum().item()
         total_test = len(label_test)
             
-        # print("loss = ", running_loss, " Accuracy = {:.4f} %".format(100*correct/total))
         print("+ {} th, Train: loss={:.4f}. Accuracy={:.4f} %. Test: acc={:.4f} %".
                 format(epoch, running_loss,100*correct/total, 100*correct_test/total_test))
 

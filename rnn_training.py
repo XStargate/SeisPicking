@@ -22,7 +22,7 @@ def drnn_train_moon(model_path=None, b_save=False):
     input_length  = len(training_data[0])
     output_length = len(training_label[0])
     lr            = 1e-2
-    cell_size     = 200
+    cell_size     = 50
 
     moon = DRNN_moon(input_dim, input_length, output_dim, output_length, cell_size, lr)
 

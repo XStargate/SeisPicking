@@ -144,7 +144,6 @@ def load_dataset(nn_type, b_shuffle=False):
 
 
 if __name__ == '__main__':
-
     pass
     # train_images, train_label, test_images, test_label = get_DCNN_database()
     # print(np.shape(train_images))

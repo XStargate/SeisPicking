@@ -20,7 +20,7 @@ def bpnn_train(model_path=None, b_save=False):
     print(np.shape(testing_data), np.shape(testing_label))
 
     # learning rate
-    lr = 1e-2
+    lr = 0.3
 
     n_epoch = 100
     batch_size = 50
@@ -32,15 +32,14 @@ def bpnn_train(model_path=None, b_save=False):
     criterion = nn.CrossEntropyLoss()
 
     # define the optimizing method
-    # optimizer = optim.Adam(net.parameters(), lr=lr, weight_decay=1)
-    optimizer = optim.SGD(net.parameters(), lr=lr, momentum=0.1)
+    # optimizer = optim.Adam(net.parameters(), lr=lr)
+    optimizer = optim.SGD(net.parameters(), lr=lr, momentum=0.5)
 
     for epoch in range(n_epoch):
         running_loss = 0.0
         correct = 0
         total = 0
         for each_batch in range(n_batch):
-        # for each_batch in range(8):
             idx = each_batch * batch_size
             if idx + batch_size > n_data:
                 break

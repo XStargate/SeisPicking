@@ -95,7 +95,7 @@ class DCNN_moon(DBase):
 
 
     def CNN(self):
-        # 2 CL + 2 FC layers.
+        # 2 CL + 1 FC layers.
         input = tf.reshape(self.x, [-1, self.input_dim, self.input_length, self.input_component])
         kernal_size_1 = 2
         num_kernal_1 = 1

@@ -40,7 +40,6 @@ def rnn_train(model_path=None, b_save=False):
         correct = 0
         total = 0
         for each_batch in range(n_batch):
-        # for each_batch in range(8):
             idx = each_batch * batch_size
             if idx + batch_size > n_data:
                 break
@@ -91,7 +90,7 @@ def rnn_train(model_path=None, b_save=False):
         _, pred_test = torch.max(output_test, 1)
         correct_test = (pred_test == label_test).sum().item()
         total_test = len(label_test)
-        # print("loss = ", running_loss, " Accuracy = {:.4f} %".format(100*correct/total))
+
         print("+ {} th, Train: loss={:.4f}. Accuracy={:.4f} %. Test: acc={:.4f} %".
                 format(epoch, running_loss,100*correct/total, 100*correct_test/total_test))
 
